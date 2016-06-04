@@ -5,8 +5,49 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project6"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+        Title="MainWindow" Height="450" MaxHeight="450" MinHeight="450" Width="600" MaxWidth="600" MinWidth="600">
+
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Connect" Margin="5" VerticalAlignment="Center"></MenuItem>
+        </Menu>
+        <GroupBox Header="Chat Message Entry" DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
+            <StackPanel>
+                <TextBox x:Name="Message" Margin="5" ></TextBox>
+                <Button Margin="5" Width="50" HorizontalAlignment="Right">Send</Button>
+            </StackPanel>
+        </GroupBox>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Grid Margin="25">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="75"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="75"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="75"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="75"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="75"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="1" Grid.ColumnSpan="5" Background="Black" Height="5"></Label>
+                <Label Grid.Row="3" Grid.ColumnSpan="5" Background="Black" Height="5"></Label>
+                <Label Grid.Column="1" Grid.RowSpan="5" Background="Black" Width="5"></Label>
+                <Label Grid.Column="3" Grid.RowSpan="5" Background="Black" Width="5"></Label>
+                <Label x:Name="R0C0" Grid.Row="0" Grid.Column="0" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+                <Label x:Name="R0C1" Grid.Row="0" Grid.Column="2" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+                <Label x:Name="R0C2" Grid.Row="0" Grid.Column="4" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+                <Label x:Name="R1C0" Grid.Row="2" Grid.Column="0" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+                <Label x:Name="R1C1" Grid.Row="2" Grid.Column="2" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+                <Label x:Name="R1C2" Grid.Row="2" Grid.Column="4" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+                <Label x:Name="R2C0" Grid.Row="4" Grid.Column="0" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+                <Label x:Name="R2C1" Grid.Row="4" Grid.Column="2" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+                <Label x:Name="R2C2" Grid.Row="4" Grid.Column="4" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+            </Grid>
+            <TextBox x:Name="ChatLog" VerticalScrollBarVisibility="Visible" Width="300"/>
+        </StackPanel>
+    </DockPanel>
 </Window>
