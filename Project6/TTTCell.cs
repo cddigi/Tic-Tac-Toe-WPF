@@ -13,13 +13,14 @@ namespace Project6
     {
         public readonly int Row;
         public readonly int Column;
+        private PlayerID _owner;
         public PlayerID Owner
         {
-            get { return this.Owner; }
+            get { return this._owner; }
             set
             {
-                this.Owner = value;
-                switch(this.Owner)
+                this._owner = value;
+                switch(this._owner)
                 {
                     case PlayerID.X: this.Content = "X"; break;
                     case PlayerID.O: this.Content = "O"; break;
@@ -36,7 +37,6 @@ namespace Project6
             this.FontSize = 50;
             this.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Center;
             this.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
-            this.Content = " ";
         }        
     }
 }

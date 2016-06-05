@@ -23,6 +23,31 @@ namespace Project6
         public MainWindow()
         {
             InitializeComponent();
+            CreateCells();
+            Reset();
+        }
+
+        private void CreateCells()
+        {
+            for(int r = 0; r < 3; r++)
+                for(int c = 0; c < 3; c++)
+                {
+                    var cell = new TTTCell(r, c);
+                    Grid.SetRow(cell, r * 2);
+                    Grid.SetColumn(cell, c * 2);
+                    GameBoard.Children.Add(cell);
+                    cell.MouseLeftButtonDown += CellClicked;
+                }
+        }
+
+        void Reset()
+        {
+
+        }
+
+        void CellClicked(object sender, InputEventArgs e)
+        {
+
         }
     }
 }

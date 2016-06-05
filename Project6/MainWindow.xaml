@@ -18,7 +18,7 @@
             </StackPanel>
         </GroupBox>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <Grid Margin="25">
+            <Grid x:Name="GameBoard" Margin="25">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="75"/>
                     <RowDefinition Height="5"/>
@@ -37,17 +37,8 @@
                 <Label Grid.Row="3" Grid.ColumnSpan="5" Background="Black" Height="5"></Label>
                 <Label Grid.Column="1" Grid.RowSpan="5" Background="Black" Width="5"></Label>
                 <Label Grid.Column="3" Grid.RowSpan="5" Background="Black" Width="5"></Label>
-                <Label x:Name="R0C0" Grid.Row="0" Grid.Column="0" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="X"></Label>
-                <Label x:Name="R0C1" Grid.Row="0" Grid.Column="2" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
-                <Label x:Name="R0C2" Grid.Row="0" Grid.Column="4" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
-                <Label x:Name="R1C0" Grid.Row="2" Grid.Column="0" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
-                <Label x:Name="R1C1" Grid.Row="2" Grid.Column="2" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
-                <Label x:Name="R1C2" Grid.Row="2" Grid.Column="4" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
-                <Label x:Name="R2C0" Grid.Row="4" Grid.Column="0" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
-                <Label x:Name="R2C1" Grid.Row="4" Grid.Column="2" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
-                <Label x:Name="R2C2" Grid.Row="4" Grid.Column="4" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
             </Grid>
-            <TextBox x:Name="ChatLog" VerticalScrollBarVisibility="Visible" Width="300"/>
+            <TextBox x:Name="ChatLog" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Width="300"/>
         </StackPanel>
     </DockPanel>
 </Window>
