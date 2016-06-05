@@ -13,7 +13,7 @@
         </Menu>
         <GroupBox Header="Chat Message Entry" DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
             <StackPanel>
-                <TextBox x:Name="Message" Margin="5" ></TextBox>
+                <TextBox x:Name="Message" Margin="5"></TextBox>
                 <Button Margin="5" Width="50" HorizontalAlignment="Right">Send</Button>
             </StackPanel>
         </GroupBox>
@@ -37,7 +37,7 @@
                 <Label Grid.Row="3" Grid.ColumnSpan="5" Background="Black" Height="5"></Label>
                 <Label Grid.Column="1" Grid.RowSpan="5" Background="Black" Width="5"></Label>
                 <Label Grid.Column="3" Grid.RowSpan="5" Background="Black" Width="5"></Label>
-                <Label x:Name="R0C0" Grid.Row="0" Grid.Column="0" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+                <Label x:Name="R0C0" Grid.Row="0" Grid.Column="0" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="X"></Label>
                 <Label x:Name="R0C1" Grid.Row="0" Grid.Column="2" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
                 <Label x:Name="R0C2" Grid.Row="0" Grid.Column="4" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
                 <Label x:Name="R1C0" Grid.Row="2" Grid.Column="0" FontSize="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
