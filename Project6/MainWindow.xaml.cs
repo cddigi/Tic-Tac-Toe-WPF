@@ -20,6 +20,8 @@ namespace Project6
     /// </summary>
     public partial class MainWindow : Window
     {
+        PlayerID player = PlayerID.X;
+        bool CurrentTurn = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -42,12 +44,30 @@ namespace Project6
 
         void Reset()
         {
-
+            foreach(var label in GameBoard.Children)
+            {
+                TTTCell cell;
+                if (label is TTTCell)
+                {
+                    cell = label as TTTCell;
+                    cell.Owner = PlayerID.None;
+                }
+            }
         }
 
         void CellClicked(object sender, InputEventArgs e)
         {
+            if (!CurrentTurn) return;
+            var cell = sender as TTTCell;
+            if (cell.Owner == PlayerID.None)
+                cell.Owner = player;
+        }
 
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new ConnectDialog();
+            if (dialog.ShowDialog() == true)
+                MessageBox.Show(String.Format("Role: {0}\nIP: {1}", dialog.ResponseText[0], dialog.ResponseText[1]));
         }
     }
 }

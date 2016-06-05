@@ -33,7 +33,7 @@ namespace Project6
         {
             Row = r;
             Column = c;
-            Owner = PlayerID.None;
+            Owner = PlayerID.X;
             this.FontSize = 50;
             this.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Center;
             this.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
