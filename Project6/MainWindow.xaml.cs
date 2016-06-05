@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,7 +25,13 @@ namespace Project6
     public partial class MainWindow : Window
     {
         PlayerID player = PlayerID.X;
-        bool CurrentTurn = false;
+        bool currentTurn = false;
+        TcpListener listener;
+        TcpClient socket;
+        NetworkStream netStream;
+        StreamReader reader;
+        StreamWriter writer;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -57,7 +67,7 @@ namespace Project6
 
         void CellClicked(object sender, InputEventArgs e)
         {
-            if (!CurrentTurn) return;
+            if (!currentTurn) return;
             var cell = sender as TTTCell;
             if (cell.Owner == PlayerID.None)
                 cell.Owner = player;
@@ -67,7 +77,42 @@ namespace Project6
         {
             var dialog = new ConnectDialog();
             if (dialog.ShowDialog() == true)
-                MessageBox.Show(String.Format("Role: {0}\nIP: {1}", dialog.ResponseText[0], dialog.ResponseText[1]));
+            {
+                if (dialog.ResponseText[0] == "Server") SetupServer();
+                else SetupClient(dialog.ResponseText[1]);
+            }
+        }
+
+        private void SetupServer()
+        {
+            currentTurn = !currentTurn;
+            listener = new TcpListener(IPAddress.Any, 50001);
+            listener.Start();
+            socket = listener.AcceptTcpClient();            
+            Task.Run(() => HandleRequest());
+        }
+
+        private void SetupClient(String ip)
+        {
+            socket = new TcpClient(ip, 50001);
+            Task.Run(() => HandleRequest());
+        }
+
+        private void HandleRequest()
+        {
+            netStream = socket.GetStream();
+            reader = new StreamReader(netStream);
+            writer = new StreamWriter(netStream);
+            writer.AutoFlush = true;
+
+            while (true)
+            {
+                var msg = reader.ReadLine();
+                var parts = msg.Split();
+
+            }
+
+            socket.Close();
         }
     }
 }
