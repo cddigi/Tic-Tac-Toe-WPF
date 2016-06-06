@@ -14,7 +14,7 @@
         <GroupBox Header="Chat Message Entry" DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Margin="10">
             <StackPanel>
                 <TextBox x:Name="Message" Margin="5"></TextBox>
-                <Button Margin="5" Width="50" HorizontalAlignment="Right">Send</Button>
+                <Button Margin="5" Width="50" HorizontalAlignment="Right" Click="Button_Click">Send</Button>
             </StackPanel>
         </GroupBox>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
