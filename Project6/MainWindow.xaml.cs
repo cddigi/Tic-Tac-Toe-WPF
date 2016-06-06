@@ -33,6 +33,7 @@ namespace Project6
         BinaryWriter writer;
         TTTCell[,] board = new TTTCell[3, 3];
         int[] Rows, Columns, Diags;
+        int numMoves;
 
         public MainWindow()
         {
@@ -57,6 +58,7 @@ namespace Project6
 
         void Reset()
         {
+            numMoves = 0;
             winner = PlayerID.None;
             Rows = new int[3];
             Columns = new int[3];
@@ -72,13 +74,22 @@ namespace Project6
             var cell = sender as TTTCell;
             if (cell.Owner == PlayerID.None)
             {
+                numMoves++;
                 currentTurn = !currentTurn;
                 cell.Owner = player;
                 writer.Write("move");
                 writer.Write(cell.Row);
                 writer.Write(cell.Column);
                 if (CheckWinner(cell.Row, cell.Column, player))
-                    ChatLog.Text += "You have won!\n";
+                {
+                    MessageBox.Show("Congratulations, You Have Won the Game.");
+                    writer.Write("playagain");
+                    var dialog = new PlayAgainDialog();
+                    if (dialog.ShowDialog() == true)
+                        writer.Write(dialog.ResponseText);
+                    else
+                        writer.Write("no");
+                }
             }
         }
 
@@ -129,10 +140,8 @@ namespace Project6
         {
             var dialog = new ConnectDialog();
             if (dialog.ShowDialog() == true)
-            {
                 if (dialog.ResponseText[0] == "Server") SetupServer();
                 else SetupClient(dialog.ResponseText[1]);
-            }
         }
 
         private void SetupServer()
@@ -170,28 +179,43 @@ namespace Project6
             reader = new BinaryReader(netStream);
             writer = new BinaryWriter(netStream);
 
-            while (true)
+            while (socket.Connected)
             {
                 var cmd = reader.ReadString();
                 switch(cmd)
                 {
                     case "move":
+                        numMoves++;
                         var r = reader.ReadInt32();
                         var c = reader.ReadInt32();
                         Application.Current.Dispatcher.Invoke(() => { board[r, c].Owner = opponent; });
                         currentTurn = !currentTurn;
-                        if(CheckWinner(r, c, opponent))
-                            Application.Current.Dispatcher.Invoke(() => { ChatLog.Text += "You have lost\n"; });
+                        if (CheckWinner(r, c, opponent))
+                        {
+                            Application.Current.Dispatcher.Invoke(() => {
+                                MessageBox.Show("Sorry, You Have Lost the Game.");
+                            });
+                            writer.Write("playagain");
+                            Application.Current.Dispatcher.Invoke(() => {
+                                var dialog = new PlayAgainDialog();
+                                if (dialog.ShowDialog() == true)
+                                    writer.Write(dialog.ResponseText);
+                                else
+                                    writer.Write("no");
+                            });
+                        }
                         break;
                     case "chat":
                         var msg = "Opponent> " + reader.ReadString() + "\n";
                         Application.Current.Dispatcher.Invoke(() => { ChatLog.Text += msg; });
                         break;
-                    case "bye": break;
+                    case "playagain":
+                        var playagain = reader.ReadString();
+                        if (playagain == "yes") Application.Current.Dispatcher.Invoke(() => { Reset(); });
+                        else socket.Close();
+                        break;
                 }
             }
-
-            socket.Close();
         }
     }
 }
