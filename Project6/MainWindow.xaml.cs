@@ -24,13 +24,14 @@ namespace Project6
     /// </summary>
     public partial class MainWindow : Window
     {
-        PlayerID player = PlayerID.X;
-        bool currentTurn = false;
+        PlayerID player, opponent;
+        bool currentTurn = false;        
         TcpListener listener;
         TcpClient socket;
         NetworkStream netStream;
-        StreamReader reader;
-        StreamWriter writer;
+        BinaryReader reader;
+        BinaryWriter writer;
+        TTTCell[,] board = new TTTCell[3, 3];
 
         public MainWindow()
         {
@@ -45,6 +46,7 @@ namespace Project6
                 for(int c = 0; c < 3; c++)
                 {
                     var cell = new TTTCell(r, c);
+                    board[r, c] = cell;
                     Grid.SetRow(cell, r * 2);
                     Grid.SetColumn(cell, c * 2);
                     GameBoard.Children.Add(cell);
@@ -54,23 +56,21 @@ namespace Project6
 
         void Reset()
         {
-            foreach(var label in GameBoard.Children)
-            {
-                TTTCell cell;
-                if (label is TTTCell)
-                {
-                    cell = label as TTTCell;
-                    cell.Owner = PlayerID.None;
-                }
-            }
+            for (int r = 0; r < 3; r++)
+                for (int c = 0; c < 3; c++)
+                    board[r, c].Owner = PlayerID.None;
         }
 
         void CellClicked(object sender, InputEventArgs e)
         {
             if (!currentTurn) return;
+            currentTurn = !currentTurn;
             var cell = sender as TTTCell;
             if (cell.Owner == PlayerID.None)
                 cell.Owner = player;
+            writer.Write("move");
+            writer.Write(cell.Row);
+            writer.Write(cell.Column);
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -85,31 +85,56 @@ namespace Project6
 
         private void SetupServer()
         {
+            player = PlayerID.X;
+            opponent = PlayerID.O;
             currentTurn = !currentTurn;
             listener = new TcpListener(IPAddress.Any, 50001);
             listener.Start();
-            socket = listener.AcceptTcpClient();            
+            socket = listener.AcceptTcpClient();
+            ChatLog.Text += "Connected to client.\n";
             Task.Run(() => HandleRequest());
         }
 
         private void SetupClient(String ip)
         {
-            socket = new TcpClient(ip, 50001);
-            Task.Run(() => HandleRequest());
+            try
+            {
+                player = PlayerID.O;
+                opponent = PlayerID.X;
+                socket = new TcpClient(ip, 50001);
+                ChatLog.Text += "Connected to server.\n";
+                Task.Run(() => HandleRequest());
+            }
+            catch (SocketException e)
+            {
+                ChatLog.Text += "Server Connection Failed, Host Not Found\n";
+            }
+            
         }
 
         private void HandleRequest()
         {
             netStream = socket.GetStream();
-            reader = new StreamReader(netStream);
-            writer = new StreamWriter(netStream);
-            writer.AutoFlush = true;
+            reader = new BinaryReader(netStream);
+            writer = new BinaryWriter(netStream);
 
             while (true)
             {
-                var msg = reader.ReadLine();
-                var parts = msg.Split();
-
+                var cmd = reader.ReadString();
+                switch(cmd)
+                {
+                    case "move":
+                        var r = reader.ReadInt32();
+                        var c = reader.ReadInt32();
+                        Application.Current.Dispatcher.Invoke(() => { board[r, c].Owner = opponent; });
+                        currentTurn = !currentTurn;
+                        break;
+                    case "chat":
+                        var msg = reader.ReadString() + "\n";
+                        Application.Current.Dispatcher.Invoke(() => { ChatLog.Text += msg; });
+                        break;
+                    case "bye": break;
+                }
             }
 
             socket.Close();

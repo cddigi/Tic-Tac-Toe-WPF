@@ -11,14 +11,14 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Connect" Margin="5" VerticalAlignment="Center" Click="MenuItem_Click"></MenuItem>
         </Menu>
-        <GroupBox Header="Chat Message Entry" DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
+        <GroupBox Header="Chat Message Entry" DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Margin="10">
             <StackPanel>
                 <TextBox x:Name="Message" Margin="5"></TextBox>
                 <Button Margin="5" Width="50" HorizontalAlignment="Right">Send</Button>
             </StackPanel>
         </GroupBox>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <Grid x:Name="GameBoard" Margin="25">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+            <Grid x:Name="GameBoard" Margin="0, 20, 25, 0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="75"/>
                     <RowDefinition Height="5"/>
@@ -38,7 +38,7 @@
                 <Label Grid.Column="1" Grid.RowSpan="5" Background="Black" Width="5"></Label>
                 <Label Grid.Column="3" Grid.RowSpan="5" Background="Black" Width="5"></Label>
             </Grid>
-            <TextBox x:Name="ChatLog" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Width="300"/>
+            <TextBox x:Name="ChatLog" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Width="300" IsReadOnly="True"/>
         </StackPanel>
     </DockPanel>
 </Window>
